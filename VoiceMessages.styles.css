@@ -10,7 +10,6 @@
 	top: 11px;
 	opacity: 0.2;
 	transition: all 200ms ease;
-	background-image: url("/assets/4bc527c257233fc69b94342d77bcb9ee.svg");
 }
 			
 .voice-message-button.active {
