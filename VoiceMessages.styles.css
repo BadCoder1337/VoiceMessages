@@ -3,23 +3,17 @@
 }
 
 .voice-message-button {
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-    align-items: center;
-    background: transparent no-repeat 50% 50%;
-    background-size: 18px 18px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    position: absolute;
+	top: 11px;
+	opacity: 0.2;
     height: 22px !important;
-    justify-content: center;
-    opacity: .6;
-    padding: 0;
-    position: relative;
     width: 22px !important;
+    background-size: 22px 22px;
+}
+
+.voice-message-button.active {
+    filter: brightness(50%) sepia(100) saturate(100) hue-rotate(25deg);
+    opacity: 1;
 }
 
 .voice-message-button:hover {
