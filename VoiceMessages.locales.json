@@ -1,0 +1,64 @@
+{
+	"ru": {
+		"description": "Добавляет голосовые сообщения как в WhatsApp, Telegram",
+		"startMsg": "Запущен",
+		"quoteTooltip": "Цитировать",
+		"deleteTooltip": "Удалить",
+		"noPermTooltip": "Нет прав для цитирования",
+		"noChatTooltip": "Нет прав для отправки сообщений",
+		"attachment": "Вложение",
+		"warning": {
+			"title": "Embed Warning",
+			"description": "By using embeded quotes you're susceptible to being red flagged from Discord and having embedding permissions removed globally. Use carefully.",
+			"yes": "Use Embeds",
+			"no": "Stick with codeblocks"
+		},
+		"settings": {
+			"mentionUser": {
+				"title": "Упоминать цитируемого пользователя",
+				"description": "Переключает упоминание пользователя при цитировании. Вы так же можете нажать на аватарку цитируемого пользователя, чтобы упомянуть его."
+			},
+			"useFallbackCodeblock": {
+				"title": "Форматировать цитаты блоками кода",
+				"choices": ["Никогда", "Всегда", "Только если нет нужных прав"]
+			},
+			"disableServers": {
+				"title": "Отключить встраивание цитат для отдельных серверов",
+				"description": "Нажмите на иконку сервера, чтобы отключить встраивание. Нажмите снова, чтобы включить.</br>Вы так же можете нажать ПКМ по иконке, чтобы изменить настройки оттуда.",
+				"context": "Встраивание цитат"
+			},
+			"reset": "Сбросить настройки"
+		}
+	},
+	"en": {
+		"description": "Add voice messages like WhatsApp, Telegram",
+		"startMsg": "Started",
+		"quoteTooltip": "Quote",
+		"deleteTooltip": "Delete",
+		"noPermTooltip": "No permission to quote",
+		"noChatTooltip": "No permission to send messages",
+		"attachment": "Attachment",
+		"warning": {
+			"title": "Embed Warning",
+			"description": "By using embeded quotes you're susceptible to being red flagged from Discord and having embedding permissions removed globally. Use carefully.",
+			"yes": "Use Embeds",
+			"no": "Stick with codeblocks"
+		},
+		"settings": {
+			"mentionUser": {
+				"title": "Mention the quoted user",
+				"description": "Whether to mention the quoted user or not. You can also click their avatar to attach their mention to your message."
+			},
+			"useFallbackCodeblock": {
+				"title": "Use codeblock quote format",
+				"choices": ["Never", "Always", "Only when without permission"]
+			},
+			"disableServers": {
+				"title": "Disable embed quotes for specific servers",
+				"description": "Click a server to disable embed quotes for it. Click again to enable.</br>You can also right-click a guild and toggle it.",
+				"context": "Embed quotes"
+			},
+			"reset": "Reset settings"
+		}
+	}
+}
