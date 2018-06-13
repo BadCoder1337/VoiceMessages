@@ -31,79 +31,91 @@ DEALINGS IN THE SOFTWARE.
        this.node = this.context.createScriptProcessor(bufferLen, 2, 2);
     }
    
-    var worker = new Worker(config.workerPath || WORKER_PATH);
-    worker.postMessage({
-      command: 'init',
-      config: {
-        sampleRate: this.context.sampleRate
-      }
-    });
-    var recording = false,
-      currCallback;
+    var worker = null;
 
-    this.node.onaudioprocess = function(e){
-      if (!recording) return;
-      worker.postMessage({
-        command: 'record',
-        buffer: [
-          e.inputBuffer.getChannelData(0),
-          e.inputBuffer.getChannelData(1)
-        ]
-      });
-    }
-
-    this.configure = function(cfg){
-      for (var prop in cfg){
-        if (cfg.hasOwnProperty(prop)){
-          config[prop] = cfg[prop];
-        }
-      }
-    }
-
-    this.record = function(){
-      recording = true;
-    }
-
-    this.stop = function(){
-      recording = false;
-    }
-
-    this.clear = function(){
-      worker.postMessage({ command: 'clear' });
-    }
-
-    this.getBuffers = function(cb) {
-      currCallback = cb || config.callback;
-      worker.postMessage({ command: 'getBuffers' })
-    }
-
-    this.exportWAV = function(cb, type){
-      currCallback = cb || config.callback;
-      type = type || config.type || 'audio/wav';
-      if (!currCallback) throw new Error('Callback not set');
-      worker.postMessage({
-        command: 'exportWAV',
-        type: type
-      });
-    }
-
-    this.exportMonoWAV = function(cb, type){
-      currCallback = cb || config.callback;
-      type = type || config.type || 'audio/wav';
-      if (!currCallback) throw new Error('Callback not set');
-      worker.postMessage({
-        command: 'exportMonoWAV',
-        type: type
-      });
-    }
-
-    worker.onmessage = function(e){
-      var blob = e.data;
-      currCallback(blob);
-    }
-
-    source.connect(this.node);
-    this.node.connect(this.context.destination);   // if the script node is not connected to an output the "onaudioprocess" event is not triggered in chrome.
+    fetch(config.workerPath || WORKER_PATH).then(async (res) => {
+          var workerSrcBlob, workerBlobURL;
+          
+              workerSrcBlob = new Blob([await res.text()], { type: 'text/javascript' });
+              workerBlobURL = window.URL.createObjectURL(workerSrcBlob);
+              
+              worker = new Worker(workerBlobURL);
+  
+              worker.postMessage({
+                command: 'init',
+                config: {
+                  sampleRate: this.context.sampleRate
+                }
+              });
+              var recording = false,
+                currCallback;
+          
+              this.node.onaudioprocess = function(e){
+                if (!recording) return;
+                worker.postMessage({
+                  command: 'record',
+                  buffer: [
+                    e.inputBuffer.getChannelData(0),
+                    e.inputBuffer.getChannelData(1)
+                  ]
+                });
+              }
+          
+              this.configure = function(cfg){
+                for (var prop in cfg){
+                  if (cfg.hasOwnProperty(prop)){
+                    config[prop] = cfg[prop];
+                  }
+                }
+              }
+          
+              this.record = function(){
+                recording = true;
+              }
+          
+              this.stop = function(){
+                recording = false;
+              }
+          
+              this.clear = function(){
+                worker.postMessage({ command: 'clear' });
+              }
+          
+              this.getBuffers = function(cb) {
+                currCallback = cb || config.callback;
+                worker.postMessage({ command: 'getBuffers' })
+              }
+          
+              this.exportWAV = function(cb, type){
+                currCallback = cb || config.callback;
+                type = type || config.type || 'audio/wav';
+                if (!currCallback) throw new Error('Callback not set');
+                worker.postMessage({
+                  command: 'exportWAV',
+                  type: type
+                });
+              }
+          
+              this.exportMonoWAV = function(cb, type){
+                currCallback = cb || config.callback;
+                type = type || config.type || 'audio/wav';
+                if (!currCallback) throw new Error('Callback not set');
+                worker.postMessage({
+                  command: 'exportMonoWAV',
+                  type: type
+                });
+              }
+          
+              worker.onmessage = function(e){
+                var blob = e.data;
+                currCallback(blob);
+              }
+          
+              source.connect(this.node);
+              this.node.connect(this.context.destination);
+    }).catch(err => {
+      console.log('Cannot fetch recorderWorker.js', err);
+    })
   };
 
   Recorder.setupDownload = function(blob, filename){
